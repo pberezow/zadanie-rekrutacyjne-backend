@@ -6,6 +6,8 @@ build:
     backend: ./Dockerfile
   config:
     REQUIREMENTS_FILENAME: heroku.yml
-release: ./release.sh
+release: 
+  command:
+   - ./release.sh
 run:
   backend: gunicorn 'app.__main__:get_app()'
