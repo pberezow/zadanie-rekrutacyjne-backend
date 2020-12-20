@@ -39,10 +39,7 @@ class DBManager:
                 self.commit()
     
     def _get_db_url(self):
-        if os.environ.get('DATABASE_URL', None):  # if runs on heroku
-            return os.environ.get('DATABASE_URL')
-        else:
-            return self.prepare_uri(**self._db_config)
+        return self._db_config['database_url']
 
     @staticmethod
     def prepare_uri(host: str, port: int, dbname: str, username: str = '', password: str = '',

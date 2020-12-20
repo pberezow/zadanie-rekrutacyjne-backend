@@ -111,7 +111,6 @@ class BookRepository:
                 where_clauses.append('published_date <= %s')
             query += ' AND '.join(where_clauses) + ';'
 
-        print(query, params)
         with self._db_manager.session() as curr:
             curr.execute(query, params)
             results = curr.fetchall()

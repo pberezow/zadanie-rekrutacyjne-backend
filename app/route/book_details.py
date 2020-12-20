@@ -31,4 +31,3 @@ class BookDetailsResource:
             resp.status = status_codes.HTTP_CREATED
         else:
             resp.status = status_codes.HTTP_NOT_FOUND
-        # resp.media = created.as_dict()

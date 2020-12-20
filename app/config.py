@@ -10,7 +10,8 @@ app_config = {
         'host': os.environ.get('POSTGRES_HOST', 'localhost'),
         'port': int(os.environ.get('POSTGRES_PORT', '5432')),
         'dbname': os.environ.get('POSTGRES_DB_NAME', 'app_db'),
-        'init_script': './app/tables.sql'
+        'init_script': './app/tables.sql',
+        'database_url': os.environ.get('DATABASE_URL', 'postgres://postgres:postgres@localhost:5432/app_db')
     },
     'gunicorn': {
         'reload': False,

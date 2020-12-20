@@ -13,8 +13,10 @@ class Application(falcon.API):
 
         self._setup_db()
         self._setup_services()
-        middleware = self._setup_middleware()
-        super().__init__(middleware=middleware)
+        self._setup_middleware()
+
+        super().__init__(middleware=self._middleware)
+
         self._setup_routes()
 
     def _setup_db(self):
@@ -30,7 +32,6 @@ class Application(falcon.API):
         self.add_route('/api/books/{book_id}', BookDetailsResource(self.book_service))
 
     def _setup_middleware(self):
-        middleware = [
+        self._middleware = [
             CrossOriginMiddleware(),
         ]
-        return middleware

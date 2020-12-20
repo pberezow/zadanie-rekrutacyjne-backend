@@ -28,4 +28,3 @@ class BookListResource:
             resp.status = status_codes.HTTP_CREATED
         else:
             resp.status = status_codes.HTTP_500
-            # resp.media = created_obj.as_dict()

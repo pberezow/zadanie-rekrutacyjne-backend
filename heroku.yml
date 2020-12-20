@@ -9,6 +9,6 @@ build:
 release:
   image: backend
   command:
-    - python3 ./init_db.py
+    - ./release.sh
 run:
   backend: gunicorn 'app.__main__:get_app()'

@@ -10,7 +10,7 @@ from app.model.db import BookEntity
 
 
 class BookService:
-    API_URL = 'https://www.googleapis.com/books/v1/volumes?{}&projection=full&startIndex={}&maxResults={}&key={}'
+    API_URL = 'https://www.googleapis.com/books/v1/volumes?{}&projection=full&startIndex={}&maxResults={}'
     ACCEPTED_BOOK_IDENTIFIERS = {'ISBN_10', 'ISBN_13'}
 
     def __init__(self, book_repository: BookRepository):
@@ -73,13 +73,13 @@ class BookService:
         return True
 
     def _import_books_task(self, q: str):
-        key = 'AIzaSyC4u_XpkDisOTDYQbVUBEyaSgcXkgH4Ft0'
-        url = self.API_URL.format(q, 0, 1, key)
+        url = self.API_URL.format(q, 0, 1)
         start_index = 0
         max_results = 40
         results_count = rq.get(url).json()['totalItems']
+
         while start_index < results_count:
-            url = self.API_URL.format(q, start_index, max_results, key)
+            url = self.API_URL.format(q, start_index, max_results)
             result = rq.get(url).json()
             results_count = result['totalItems']
             books_to_import = [BookEntity(**self._map_api_record_to_entity(r)) for r in result['items']]
