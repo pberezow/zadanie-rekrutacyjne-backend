@@ -153,6 +153,6 @@ RUN \
  python3 -m pip install -r requirements.txt --no-cache-dir && \
  apk --purge del .build-deps
 
-RUN python3 ./init_db.py
+# RUN python3 ./init_db.py
 
 ENTRYPOINT ["sh", "./entrypoint.sh"]
