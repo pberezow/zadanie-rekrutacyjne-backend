@@ -159,4 +159,6 @@ RUN \
 RUN apk add postgresql-client
 RUN apk add curl
 
+EXPOSE 8000
+
 ENTRYPOINT ["sh", "./entrypoint.sh"]
