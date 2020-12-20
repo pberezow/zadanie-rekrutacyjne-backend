@@ -1,0 +1,14 @@
+setup:
+  addons:
+   - plan: heroku-postgresql
+build:
+  docker:
+    backend: ./Dockerfile
+  config:
+    REQUIREMENTS_FILENAME: heroku.yml
+release:
+  image: backend
+  command:
+    - python ./init_db.py
+run:
+  backend: gunicorn 'app.__main__:get_app()'

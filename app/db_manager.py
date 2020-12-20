@@ -1,9 +1,11 @@
 import psycopg2
+import os
 
 
 class DBManager:
     def __init__(self, db_config):
-        self._connection = self.prepare_uri(**db_config)
+        self._db_config = db_config
+        self._connection = self._get_db_url()
         self._db_connection = self._connect()
         self.init_db(db_config.get('init_script', None))
 
@@ -35,6 +37,12 @@ class DBManager:
                 for query in queries:
                     cur.execute(query)
                 self.commit()
+    
+    def _get_db_url(self):
+        if os.environ.get('DATABASE_URL', None):  # if runs on heroku
+            return os.environ.get('DATABASE_URL')
+        else:
+            return self.prepare_uri(**self._db_config)
 
     @staticmethod
     def prepare_uri(host: str, port: int, dbname: str, username: str = '', password: str = '',
