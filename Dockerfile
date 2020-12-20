@@ -157,5 +157,6 @@ RUN \
  apk --purge del .build-deps
 
 RUN apk add postgresql-client
+RUN apk add curl
 
 ENTRYPOINT ["sh", "./entrypoint.sh"]

@@ -3,11 +3,12 @@ setup:
    - plan: heroku-postgresql
 build:
   docker:
-    backend: ./Dockerfile
+    web: ./Dockerfile
   config:
     REQUIREMENTS_FILENAME: heroku.yml
 release: 
   command:
    - ./release.sh
+  image: web
 run:
-  backend: gunicorn 'app.__main__:get_app()'
+  web: gunicorn 'app.__main__:get_app()'
