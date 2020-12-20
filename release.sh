@@ -1,2 +1,2 @@
 #!/bin/sh
-python3 ./init_db.py
+psql ${DATABASE_URL} -f ./app/tables.sql

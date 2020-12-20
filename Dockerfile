@@ -144,6 +144,9 @@ COPY ./requirements.txt ./requirements.txt
 COPY ./gunicorn.conf.py ./gunicorn.conf.py
 COPY ./entrypoint.sh ./entrypoint.sh
 COPY ./init_db.py ./init_db.py
+COPY ./release.sh ./release.sh
+
+RUN chmod +x ./release.sh
 
 # for cffi and psycopg2 (build python packages)
 RUN \
@@ -153,5 +156,6 @@ RUN \
  python3 -m pip install -r requirements.txt --no-cache-dir && \
  apk --purge del .build-deps
 
+RUN apk add postgresql-client
 
 ENTRYPOINT ["sh", "./entrypoint.sh"]
