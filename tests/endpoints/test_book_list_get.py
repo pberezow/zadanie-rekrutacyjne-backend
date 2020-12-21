@@ -8,4 +8,4 @@ class TestBookListGet(BaseApiTest):
     def test_get_with_empty_db(self):
         res = self.client.simulate_get(self.URL)
         assert res.status == falcon.HTTP_200
-        assert res.json() == []
+        assert res.json == []

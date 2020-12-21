@@ -11,6 +11,7 @@ class DBManager:
         self._autocommit = True
         if is_test_instance:
             self.setup_test_manager()
+        # print(self._connection)
         self._connection = self._get_db_url()
         self._db_connection = self._connect()
         self.init_db(db_config.get('init_script', None))
@@ -25,7 +26,7 @@ class DBManager:
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
 
         # create database
-        db_name = f'{self._test_db_config["test_table_prefix"]}-{self._test_db_id}'
+        db_name = f'{self._test_db_config["test_table_prefix"]}_{self._test_db_id}'
         with conn.cursor() as curr:
             try:
                 curr.execute(f'CREATE DATABASE {db_name};')
@@ -34,11 +35,11 @@ class DBManager:
 
         # connect manager to created db
         conn.close()
-        self._connection = f'{base_url}/{db_name}'
+        self._connection = f'{base_url}{db_name}'
         try:
-            conn = self._connect()
+            self._db_connection = self._connect()
         except psycopg2.Error as err:
-            raise RuntimeError from err
+            raise RuntimeError() from err
 
         self.init_db(self._test_db_config['db_definition'])
         self._db_connection.close()
@@ -53,7 +54,7 @@ class DBManager:
         conn = psycopg2.connect(dsn=base_url)
         conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT)
 
-        db_name = f'{self._test_db_config["test_table_prefix"]}-{self._test_db_id}'
+        db_name = f'{self._test_db_config["test_table_prefix"]}_{self._test_db_id}'
         with conn.cursor() as curr:
             try:
                 curr.execute(f'DROP DATABASE {db_name};')
@@ -94,7 +95,7 @@ class DBManager:
     
     def _get_db_url(self):
         if self._is_test_instance:
-            return f'{self._test_db_config["test_table_prefix"]}-{self._test_db_id}'
+            return f'{self._test_db_config["database_url_base"]}{self._test_db_config["test_table_prefix"]}_{self._test_db_id}'
         else:
             return self._db_config['database_url']
 
