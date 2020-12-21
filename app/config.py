@@ -13,6 +13,11 @@ app_config = {
         'init_script': './app/tables.sql',
         'database_url': os.environ.get('DATABASE_URL', 'postgres://postgres:postgres@localhost:5432/app_db')
     },
+    'test_db': {
+        'database_url_base': 'postgres://postgres:postgres@localhost:5432/',
+        'test_table_prefix': 'test_app_db',
+        'db_definition': './app/tables.sql'
+    },
     'gunicorn': {
         'reload': False,
         'loglevel': 'debug',

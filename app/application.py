@@ -8,10 +8,10 @@ from app.middleware import CrossOriginMiddleware
 
 
 class Application(falcon.API):
-    def __init__(self, config):
+    def __init__(self, config, is_test_instance=False, test_db_id=None):
         self.config = config
 
-        self._setup_db()
+        self._setup_db(is_test_instance, test_db_id)
         self._setup_services()
         self._setup_middleware()
 
@@ -19,8 +19,9 @@ class Application(falcon.API):
 
         self._setup_routes()
 
-    def _setup_db(self):
-        self._db_manager = DBManager(db_config=self.config['db'])
+    def _setup_db(self, is_test_instance, test_db_id):
+        self._db_manager = DBManager(db_config=self.config['db'], test_db_config=self.config['test_db'],
+                                     is_test_instance=is_test_instance, test_db_id=test_db_id)
         self.book_repository = BookRepository(self._db_manager)
 
     def _setup_services(self):
