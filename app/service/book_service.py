@@ -26,18 +26,16 @@ class BookService:
     def create_book(self, data: dict) -> bool:
         book = BookEntity(**{'book_id': None, **data})
         created_book = self._book_repository.insert_book(book)
-        if created_book:
-            return True
-        else:
-            return False
+        return created_book is not None
 
     def update_book(self, book_id: str, data: dict) -> bool:
         book = BookEntity(**{'book_id': book_id, **data})
         updated_book = self._book_repository.update_book(book)
-        if updated_book:
-            return True
-        else:
-            return False
+        return updated_book is not None
+
+    def delete_book(self, book_id: str) -> bool:
+        removed_book = self._book_repository.delete_book_by_id(book_id)
+        return removed_book is not None
 
     def get_book_by_id(self, book_id: str) -> Optional[BookEntity]:
         return self._book_repository.get_book_by_id(book_id)
@@ -45,13 +43,11 @@ class BookService:
     def _get_filtered_books(self, query_string: str) -> List[BookEntity]:
         params_dct = dict((k, v[0]) for k, v in parse_qs(query_string, keep_blank_values=False).items())
 
-        print(params_dct)
         date_from = None
         if params_dct.get('published_date__from', None):
             try:
                 date_from = self._map_str_to_date(params_dct['published_date__from'])
-            except ValueError as err:
-                print(err)
+            except ValueError:
                 pass
         date_to = None
         if params_dct.get('published_date__to', None):

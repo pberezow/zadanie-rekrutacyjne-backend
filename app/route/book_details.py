@@ -31,3 +31,8 @@ class BookDetailsResource:
             resp.status = status_codes.HTTP_CREATED
         else:
             resp.status = status_codes.HTTP_NOT_FOUND
+
+    def on_delete(self, req: Request, resp:Response, book_id: str):
+        deleted = self._book_service.delete_book(book_id)
+        if not deleted:
+            resp.status = status_codes.HTTP_NOT_FOUND
